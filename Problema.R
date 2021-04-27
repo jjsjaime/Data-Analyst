@@ -1,4 +1,4 @@
-
+# Here are a problem that  I found and have some dificult at the beggining to solve.
 
 nome <- c("Jon", "Bill", "Maria", "Mark")
 numero <- c(1234, 9999, 2222, 3333)
