@@ -1,0 +1,199 @@
+#------------------------------#
+#          import 1            #
+#------------------------------#
+
+# usando data.table
+# tem a funcao fread que é rapida e nao precisa de muitos argumentos
+# fread simplesmente funciona
+
+# load the data.table package using library()
+library(data.table)
+
+# Import potatoes.csv with fread(): potatoes
+potatoes <- fread("potatoes.csv")
+
+# Print out potatoes
+potatoes
+
+# fread is already loaded
+
+# Import columns 6 and 8 of potatoes.csv: potatoes
+potatoes <- fread("potatoes.csv", select = c(6,8))
+
+# Plot texture (x) and moistness (y) of potatoes
+plot(potatoes$texture, potatoes$moistness)
+
+
+#------------------------------#
+#          import 2            #
+#------------------------------#
+
+# dbConnect() creates a connection between your R session and a SQL database.
+
+# Load the DBI package
+library(DBI)
+
+# Connect to the MySQL database: con
+con <- dbConnect(RMySQL::MySQL(), 
+                 dbname = "tweater", 
+                 host = "courses.csrrinzqubik.us-east-1.rds.amazonaws.com", 
+                 port = 3306,
+                 user = "student",
+                 password = "datacamp")
+
+# Build a vector of table names: tables
+tables <- dbListTables(con)
+
+# Display structure of tables
+str(tables)
+
+
+# Import the users table from tweater: users
+users <- dbReadTable(con, "users")
+
+# Print users
+users
+
+# Import all tables
+tables <- lapply(table_names, dbReadTable, conn = con)
+
+# Print out tables
+tables
+
+# -----------
+# usando SQL
+#------------
+
+
+# Connect to the database
+library(DBI)
+con <- dbConnect(RMySQL::MySQL(),
+                 dbname = "tweater",
+                 host = "courses.csrrinzqubik.us-east-1.rds.amazonaws.com",
+                 port = 3306,
+                 user = "student",
+                 password = "datacamp")
+
+# Import tweat_id column of comments where user_id is 1: elisabeth
+elisabeth <- dbGetQuery(con, "SELECT tweat_id FROM comments WHERE user_id = 1")
+
+# Print elisabeth
+elisabeth
+
+# Connect to the database
+library(DBI)
+con <- dbConnect(RMySQL::MySQL(),
+                 dbname = "tweater",
+                 host = "courses.csrrinzqubik.us-east-1.rds.amazonaws.com",
+                 port = 3306,
+                 user = "student",
+                 password = "datacamp")
+
+# Create data frame specific
+specific <- dbGetQuery(con, "SELECT message FROM comments WHERE tweat_id = 77 AND user_id > 4")
+
+# Print specific
+specific
+
+# -----------
+# dados da WEB
+#------------
+
+# Load the readr package
+library(readr)
+
+# Import the csv file: pools
+url_csv <- "http://s3.amazonaws.com/assets.datacamp.com/production/course_1478/datasets/swimming_pools.csv"
+pools <- read_csv(url_csv)
+
+# Import the txt file: potatoes
+url_delim <- "http://s3.amazonaws.com/assets.datacamp.com/production/course_1478/datasets/potatoes.txt"
+potatoes <- read_tsv(url_delim)
+
+# Print pools and potatoes
+pools 
+potatoes 
+
+# https URL to the swimming_pools csv file.
+url_csv <- "https://s3.amazonaws.com/assets.datacamp.com/production/course_1478/datasets/swimming_pools.csv"
+
+# Import the file using read.csv(): pools1
+pools1 <- read.csv(url_csv)
+
+# Load the readr package
+library(readr)
+
+# Import the file using read_csv(): pools2
+pools2 <- read_csv(url_csv)
+
+# Print the structure of pools1 and pools2
+str(pools1)
+str(pools2)
+
+# Load the readxl and gdata package
+library(readxl)
+library(gdata)
+
+# Specification of url: url_xls
+url_xls <- "http://s3.amazonaws.com/assets.datacamp.com/production/course_1478/datasets/latitude.xls"
+
+# Import the .xls file with gdata: excel_gdata
+excel_gdata <- read.xls(url_xls)
+
+# Download file behind URL, name it local_latitude.xls
+local_latitude <- download.file(url_xls, destfile = "local_latitude.xls")
+
+# Import the local .xls file with readxl: excel_readxl
+excel_readxl <- read_excel("local_latitude.xls")
+
+# Load the httr package
+library(httr)
+
+# Get the url, save response to resp
+url <- "http://www.example.com/"
+resp <- GET(url)
+
+# Print resp
+resp
+
+# Get the raw content of resp: raw_content
+raw_content <- content(resp, as = "raw")
+
+# Print the head of raw_content
+head(raw_content)
+
+
+# importando JSON
+
+# Load the jsonlite package
+library(jsonlite)
+
+# wine_json is a JSON
+wine_json <- '{"name":"Chateau Migraine", "year":1997, "alcohol_pct":12.4, "color":"red", "awarded":false}'
+
+# Convert wine_json into a list: wine
+wine <- fromJSON(wine_json)
+
+# Print structure of wine
+str(wine)
+
+
+
+# The package jsonlite is already loaded
+
+# Definition of the URLs
+url_sw4 <- "http://www.omdbapi.com/?apikey=72bc447a&i=tt0076759&r=json"
+url_sw3 <- "http://www.omdbapi.com/?apikey=72bc447a&i=tt0121766&r=json"
+
+# Import two URLs with fromJSON(): sw4 and sw3
+sw4 <- fromJSON(url_sw4)
+sw3 <- fromJSON(url_sw3)
+
+# Print out the Title element of both lists
+sw4$Title
+sw3$Title
+
+# Is the release year of sw4 later than sw3?
+sw4$Year > sw3$Year
+
+
